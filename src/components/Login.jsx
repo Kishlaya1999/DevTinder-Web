@@ -1,9 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
   const handleLogin = async () => {
     // The following line sends a POST request to the backend login endpoint using axios.
@@ -15,6 +18,9 @@ const Login = () => {
       { emailId: email, password },            // Request body: user's email and password
       { withCredentials: true }                // Include credentials (cookies) in the request
     );
+
+    dispatch(addUser(res.data.data));
+
     console.log(res);
 
   }
