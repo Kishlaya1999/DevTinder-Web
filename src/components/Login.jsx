@@ -2,11 +2,13 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     // The following line sends a POST request to the backend login endpoint using axios.
@@ -20,8 +22,7 @@ const Login = () => {
     );
 
     dispatch(addUser(res.data.data));
-
-    console.log(res);
+    navigate("/");
 
   }
 
