@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { BASE_URL } from '../utils/constants';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice';
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -11,19 +13,19 @@ const SignUp = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [toast, setToast] = useState({ message: "", show: false });
-
+  const dispatch = useDispatch();
 
   const handleSignUp = async () => {
     try {
-      const res = await axios.post(`${BASE_URL}/signup`, { firstName, lastName, emailId: email, password })
+      const res = await axios.post(`${BASE_URL}/signup`, { firstName, lastName, emailId: email, password }, { withCredentials: true })
       if (res.status === 200) {
         setToast({ show: true, message: "User Signup Successfull" });
-        // navigate("/login");
+        dispatch(addUser(res.data.data));
       }
 
       setTimeout(() => {
         setToast({ ...toast, show: false });
-        navigate("/login");
+        navigate("/profile");
       }, 3000)
 
     } catch (error) {
