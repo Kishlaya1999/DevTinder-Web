@@ -4,22 +4,27 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const EditProfile = ({ user }) => {
+  // State variables for each profile field, initialized with current user data
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
   const [age, setAge] = useState(user.age || "");
   const [gender, setGender] = useState(user.gender || "");
   const [about, setAbout] = useState(user.about || "");
-  const [error, setError] = useState("");
-  const dispatch = useDispatch();
-  const [showToast, setShowToast] = useState(false);
+  const [error, setError] = useState(""); // State for error messages
+  const dispatch = useDispatch(); // Redux dispatch function
+  const [showToast, setShowToast] = useState(false); // State for showing success toast
+  const navigate = useNavigate(); // React Router navigation
 
+  // Function to save the updated profile
   const saveProfile = async () => {
-    //Clear Errors
+    // Clear previous errors
     setError("");
     try {
+      // Send PATCH request to backend to update profile
       const res = await axios.patch(
         BASE_URL + "/profile/edit",
         {
@@ -30,14 +35,19 @@ const EditProfile = ({ user }) => {
           gender,
           about,
         },
-        { withCredentials: true }
+        { withCredentials: true } // Include credentials for authentication
       );
+      // Update user data in Redux store
       dispatch(addUser(res?.data?.data));
+      // Show success toast
       setShowToast(true);
+      // Hide toast and navigate to home after 3 seconds
       setTimeout(() => {
         setShowToast(false);
+        navigate("/");
       }, 3000);
     } catch (err) {
+      // Set error message if request fails
       setError(err.response.data);
     }
   };

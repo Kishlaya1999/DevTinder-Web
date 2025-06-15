@@ -2,12 +2,12 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../utils/constants';
 
 const Login = () => {
-  const [email, setEmail] = useState("shailesh@gmail.com");
-  const [password, setPassword] = useState("Shailesh@234");
+  const [email, setEmail] = useState("@gmail.com");
+  const [password, setPassword] = useState("@123");
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -66,11 +66,10 @@ const Login = () => {
           <div className="card-actions justify-end self-center">
             <button className="btn btn-primary" onClick={handleLogin}>Login</button>
           </div>
+          <p className='text-center'>Don't have a account ? <Link className='link-secondary' to="/signup">Sign Up</Link></p>
         </div>
       </div>
     </div>
-    // </div>
-
   )
 }
 
